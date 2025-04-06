@@ -1,0 +1,13 @@
+@import '../../../styles/variables.css';
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--spacing);
+}
+
+th, td {
+  padding: var(--spacing);
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
