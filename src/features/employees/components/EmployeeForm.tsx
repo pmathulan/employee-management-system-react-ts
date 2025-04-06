@@ -26,7 +26,7 @@ const EmployeeForm = ({ initialValues, onSubmit, isEdit = false }: Props) => {
     handleSubmit,
     formState: { errors },
   } = useForm<EmployeeFormValues>({
-    defaultValues: initialValues, // Make sure initial values are set correctly
+    defaultValues: initialValues, // Set initial values for the form
     resolver: yupResolver(employeeSchema), // Use yup for validation
   });
 

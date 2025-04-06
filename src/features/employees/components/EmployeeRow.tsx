@@ -1,5 +1,5 @@
-import { Employee } from '../types/Employee';
-import styles from '../styles/EmployeeRow.module.css';
+import { Employee } from "../types/Employee";
+import styles from "../styles/EmployeeRow.module.css";
 
 interface Props {
   employee: Employee;
@@ -16,7 +16,7 @@ const EmployeeRow = ({ employee, onEdit, onDelete }: Props) => {
       <td>{employee.email}</td>
       <td>{employee.phone}</td>
       <td>{employee.gender}</td>
-      <td>{employee.dob}</td>
+      <td>{employee.dateOfBirth}</td>
       <td>{employee.joinedDate}</td>
 
       {/* Action buttons */}
@@ -24,7 +24,10 @@ const EmployeeRow = ({ employee, onEdit, onDelete }: Props) => {
         <button className={styles.editBtn} onClick={() => onEdit(employee.id)}>
           Edit
         </button>
-        <button className={styles.deleteBtn} onClick={() => onDelete(employee.id)}>
+        <button
+          className={styles.deleteBtn}
+          onClick={() => onDelete(employee.id)}
+        >
           Delete
         </button>
       </td>
