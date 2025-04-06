@@ -2,20 +2,16 @@ import { render, fireEvent, waitFor } from "@testing-library/react";
 import EmployeeForm from "../../features/employees/components/EmployeeForm";
 import { EmployeeFormValues } from "../../features/employees/types/Employee";
 import "@testing-library/jest-dom";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 
 describe("EmployeeForm", () => {
   const onSubmitMock = jest.fn();
 
   it("should render the form correctly", () => {
     const { getByLabelText } = render(
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <EmployeeForm
-          initialValues={{ firstName: "", lastName: "", email: "", phone: "" }}
-          onSubmit={onSubmitMock}
-        />
-      </LocalizationProvider>
+      <EmployeeForm
+        initialValues={{ firstName: "", lastName: "", email: "", phone: "" }}
+        onSubmit={onSubmitMock}
+      />
     );
 
     expect(getByLabelText("First Name")).toBeInTheDocument();
@@ -23,13 +19,11 @@ describe("EmployeeForm", () => {
   });
 
   it("should display validation errors when fields are invalid", async () => {
-    const { getByText } = render(
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <EmployeeForm
-          initialValues={{ firstName: "", lastName: "", email: "", phone: "" }}
-          onSubmit={onSubmitMock}
-        />
-      </LocalizationProvider>
+    const { getByLabelText, getByText } = render(
+      <EmployeeForm
+        initialValues={{ firstName: "", lastName: "", email: "", phone: "" }}
+        onSubmit={onSubmitMock}
+      />
     );
 
     fireEvent.click(getByText("Add Employee"));

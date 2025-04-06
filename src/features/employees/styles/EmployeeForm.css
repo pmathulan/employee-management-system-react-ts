@@ -1,0 +1,53 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  font-size: var(--font-size-base);
+  padding: calc(var(--spacing-unit) * 1.5);
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  background-color: var(--input-background, white);
+  color: var(--text-color, #333);
+}
+
+.input.error {
+  border-color: var(--color-secondary);
+}
+
+.error-message {
+  font-size: 0.875rem;
+  color: var(--color-secondary);
+  margin-top: 4px;
+}
+
+.radio-group {
+  display: flex;
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+.btn {
+  padding: calc(var(--spacing-unit) * 1.5) calc(var(--spacing-unit) * 2);
+  font-size: var(--font-size-base);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  background-color: var(--color-primary);
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #1565c0;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+}

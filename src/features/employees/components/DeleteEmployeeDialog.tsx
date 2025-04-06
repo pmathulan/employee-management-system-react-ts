@@ -1,19 +1,12 @@
-// src/components/DeleteEmployeeDialog.tsx
+import React from "react";
+import "../styles/DeleteEmployeeDialog.module.css"; // Import the custom CSS
 
-import * as React from "react";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
-} from "@mui/material";
-
+// Props type for DeleteEmployeeDialog component
 interface DeleteEmployeeDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  employeeName: string; // Employee name for better UX
+  open: boolean; // Whether the dialog should be displayed
+  onClose: () => void; // Function to call when user closes dialog
+  onConfirm: () => void; // Function to call when user confirms deletion
+  employeeName: string; // Employee name to display in message
 }
 
 const DeleteEmployeeDialog: React.FC<DeleteEmployeeDialogProps> = ({
@@ -22,24 +15,29 @@ const DeleteEmployeeDialog: React.FC<DeleteEmployeeDialogProps> = ({
   onConfirm,
   employeeName,
 }) => {
+  // If not open, don't render anything
+  if (!open) return null;
+
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Delete Employee</DialogTitle>
-      <DialogContent>
-        <p>
-          Are you sure you want to delete the employee{" "}
-          <strong>{employeeName}</strong>?
-        </p>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose} color="secondary">
-          Cancel
-        </Button>
-        <Button onClick={onConfirm} color="primary">
-          Delete
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <div className="dialog-backdrop">
+      <div className="dialog">
+        <h2 className="dialog-title">Delete Employee</h2>
+        <div className="dialog-content">
+          <p>
+            Are you sure you want to delete the employee{" "}
+            <strong>{employeeName}</strong>?
+          </p>
+        </div>
+        <div className="dialog-actions">
+          <button className="btn cancel-btn" onClick={onClose}>
+            Cancel
+          </button>
+          <button className="btn delete-btn" onClick={onConfirm}>
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 
