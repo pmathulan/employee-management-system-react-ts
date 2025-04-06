@@ -1,7 +1,7 @@
 // src/pages/AddEmployeePage.tsx
 
 import { useDispatch } from "react-redux"; // Hook to dispatch actions to Redux store
-import { useNavigate, useParams } from "react-router-dom"; // Hook to navigate between routes and get route params
+import { useNavigate, useParams } from "react-router"; // Hook to navigate between routes and get route params
 import EmployeeForm from "../components/EmployeeForm"; // Import EmployeeForm component
 import { setEmployees } from "../employeeSlice"; // Import Redux action to update employee list
 import { getEmployees } from "../employeeApi"; // API utility to get current employee data

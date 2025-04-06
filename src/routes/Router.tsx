@@ -1,22 +1,10 @@
-// React Router setup using React Router v6+
-
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
 import EmployeeListPage from "../features/employees/pages/EmployeeListPage";
 import AddEmployeePage from "../features/employees/pages/AddEmployeePage";
 
 const AppRouter = () => {
   return (
-    <Router
-      future={{
-        v7_startTransition: true,
-        v7_relativeSplatPath: true,
-      }}
-    >
+    <Router>
       <Routes>
         {/* Default route to employee list */}
         <Route path="/" element={<EmployeeListPage />} />
