@@ -1,34 +1,46 @@
-import { useSelector, useDispatch } from 'react-redux';
-import EmployeeTable from '../components/EmployeeTable';
-import { deleteEmployee } from '../employeeSlice';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../../../store/store';
+// src/pages/EmployeeListPage.tsx
+
+import { useSelector } from "react-redux";
+import EmployeeTable from "../components/EmployeeTable";
+import { useNavigate } from "react-router-dom";
+import { RootState } from "../../../store/store";
+import useDeleteEmployeeDialog from "../../../hooks/useDeleteEmployeeDialog";
+import DeleteEmployeeDialog from "../components/DeleteEmployeeDialog";
 
 const EmployeeListPage = () => {
   const employees = useSelector((state: RootState) => state.employee.list);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Handle edit by navigating to edit form
+  // Using the custom hook for delete dialog management
+  const {
+    isDialogOpen,
+    employeeName,
+    handleDeleteOpen,
+    handleDeleteConfirm,
+    handleDeleteClose,
+  } = useDeleteEmployeeDialog();
+
   const handleEdit = (id: string) => {
     navigate(`/employee/edit/${id}`);
-  };
-
-  // Handle delete by dispatching Redux action
-  const handleDelete = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this employee?')) {
-      dispatch(deleteEmployee(id));
-    }
   };
 
   return (
     <div>
       <h2>Employee List</h2>
-      <button onClick={() => navigate('/employee/add')}>Add Employee</button>
+      <button onClick={() => navigate("/employee/add")}>Add Employee</button>
+      {/* Render EmployeeTable and pass the necessary props for edit and delete actions */}
       <EmployeeTable
         employees={employees}
         onEdit={handleEdit}
-        onDelete={handleDelete}
+        onDelete={handleDeleteOpen}
+      />
+
+      {/* Delete confirmation dialog */}
+      <DeleteEmployeeDialog
+        open={isDialogOpen}
+        onClose={handleDeleteClose}
+        onConfirm={handleDeleteConfirm}
+        employeeName={employeeName}
       />
     </div>
   );
