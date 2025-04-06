@@ -13,7 +13,7 @@ const mockEmployees = [
     firstName: "John",
     lastName: "Doe",
     email: "john@example.com",
-    phone: "1234567890",
+    phone: "+6512345678",
     gender: "Male",
     dob: "1990-01-01",
     joinedDate: "2020-01-01",
