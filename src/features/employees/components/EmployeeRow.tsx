@@ -1,5 +1,4 @@
 import { Employee } from "../types/Employee";
-import styles from "../styles/EmployeeRow.module.css";
 
 interface Props {
   employee: Employee;
@@ -10,7 +9,6 @@ interface Props {
 const EmployeeRow = ({ employee, onEdit, onDelete }: Props) => {
   return (
     <tr>
-      {/* Display all employee attributes */}
       <td>{employee.firstName}</td>
       <td>{employee.lastName}</td>
       <td>{employee.email}</td>
@@ -18,13 +16,21 @@ const EmployeeRow = ({ employee, onEdit, onDelete }: Props) => {
       <td>{employee.gender}</td>
       <td>{employee.dateOfBirth}</td>
       <td>{employee.joinedDate}</td>
-
-      {/* Action buttons */}
-      <td>
-        <button className={styles.editBtn} onClick={() => onEdit(employee.id)}>
-          Edit
-        </button>
-        <button onClick={() => onDelete(employee.id)}>Delete</button>
+      <td className="text-center">
+        <div className="d-flex flex-column flex-sm-row justify-content-center">
+          <button
+            className="btn btn-primary mb-2 mb-sm-0 me-sm-2 w-100 w-sm-auto"
+            onClick={() => onEdit(employee.id)}
+          >
+            Edit
+          </button>
+          <button
+            className="btn btn-danger w-100 w-sm-auto"
+            onClick={() => onDelete(employee.id)}
+          >
+            Delete
+          </button>
+        </div>
       </td>
     </tr>
   );

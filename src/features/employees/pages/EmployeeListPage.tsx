@@ -26,9 +26,6 @@ const EmployeeListPage = () => {
   return (
     <>
       <Header />
-
-      <h2>Employee List</h2>
-      <button onClick={() => navigate("/employee/add")}>Add Employee</button>
       {/* Render EmployeeTable and pass the necessary props for edit and delete actions */}
       <EmployeeTable
         employees={employees}

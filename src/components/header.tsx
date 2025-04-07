@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import "../styles/Header.css";
 import { useNavigate } from "react-router";
 
@@ -14,7 +14,6 @@ const Header: React.FC = () => {
         >
           <h6 className="sitename">Employee Management</h6>
         </a>
-
         <nav id="navmenu" className="navmenu">
           <ul>
             <li>

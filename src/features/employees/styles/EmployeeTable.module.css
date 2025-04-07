@@ -2,12 +2,54 @@
 
 .table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: var(--spacing);
+  table-layout: fixed;
 }
 
-th, td {
-  padding: var(--spacing);
-  text-align: left;
-  border-bottom: 1px solid #ccc;
+/* Ensure the table is scrollable on mobile */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
+/* Sticky Action column (on large screens) */
+.stickyColumn {
+  position: sticky;
+  right: 0;
+  background-color: white;
+  z-index: 1;
+  border-left: 1px solid #ddd; /* Optional: For clear separation of actions column */
+}
+
+/* Action buttons container styling */
+.stickyAction {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px; /* Fixed width for action buttons */
+  background-color: white;
+  z-index: 2;
+  padding-top: 10px;
+}
+
+/* Button styling */
+.stickyAction button {
+  width: 100%;
+  margin-bottom: 5px; /* Space between buttons */
+}
+
+/* Adjust action button layout for smaller screens */
+@media (max-width: 768px) {
+  /* Keep the action buttons fixed and prevent overlapping */
+  .stickyAction {
+    position: fixed;
+    right: 10px; /* Keep it close to the right edge */
+    top: 50%; /* Center vertically on screen */
+    transform: translateY(-50%);
+    z-index: 3;
+  }
+
+  .table-responsive {
+    padding-right: 140px; /* Add padding to avoid buttons overlay */
+  }
 }
