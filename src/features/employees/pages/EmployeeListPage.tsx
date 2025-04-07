@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { RootState } from "../../../store/store";
 import DeleteEmployeeDialog from "../components/DeleteEmployeeDialog";
 import useDeleteEmployeeDialog from "../hooks/useDeleteEmployeeDialog";
+import Header from "../../../components/header";
 
 const EmployeeListPage = () => {
   const employees = useSelector((state: RootState) => state.employee.list);
@@ -23,7 +24,9 @@ const EmployeeListPage = () => {
   };
 
   return (
-    <div>
+    <>
+      <Header />
+
       <h2>Employee List</h2>
       <button onClick={() => navigate("/employee/add")}>Add Employee</button>
       {/* Render EmployeeTable and pass the necessary props for edit and delete actions */}
@@ -40,7 +43,7 @@ const EmployeeListPage = () => {
         onConfirm={handleDeleteConfirm}
         employeeName={employeeName}
       />
-    </div>
+    </>
   );
 };
 

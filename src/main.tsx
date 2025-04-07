@@ -3,6 +3,8 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { Provider } from "react-redux";
 import "./styles/variables.css";
+import "bootstrap/dist/css/bootstrap.css";
+
 import { store } from "./store/store.ts";
 
 createRoot(document.getElementById("root")!).render(

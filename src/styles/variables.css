@@ -1,6 +1,7 @@
 :root {
-  --color-primary: #1e88e5;
-  --color-secondary: #e53935;
+  --color-primary:  hwb(188 4% 63%);
+  --color-secondary: #1e88e5;
+  --color-tertiary: #0d518d;
   --color-on-primary: #ffffff;
   --color-on-secondary: #ffffff;
   --color-surface: #ffffff;
@@ -30,3 +31,4 @@
   --color-text-primary: #ffffff;
   --color-text-secondary: #cccccc;
 } */
+

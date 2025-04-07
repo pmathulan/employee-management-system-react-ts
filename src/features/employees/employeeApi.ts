@@ -1,6 +1,8 @@
-import { Employee } from "./types/Employee";
+// employeeApi.ts
 
-// Fetch all employees from localStorage
+import { Employee } from './types/Employee';
+
+// Fetch all employees (could eventually make this an API call)
 export const getEmployees = (): Employee[] => {
     const data = localStorage.getItem('employees');
     return data ? JSON.parse(data) : [];
