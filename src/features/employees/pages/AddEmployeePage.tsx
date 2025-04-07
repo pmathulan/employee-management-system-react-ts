@@ -5,6 +5,7 @@ import { getEmployees } from "../employeeApi"; // API utility to get current emp
 import { EmployeeFormValues } from "../types/EmployeeFormValues"; // Type for form values
 import { v4 as uuidv4 } from "uuid"; // Importing uuid for unique ID generation
 import { setEmployees } from "../employeeSlice";
+import Header from "../../../components/header";
 
 // Component to handle adding or editing an employee
 const AddEmployeePage = () => {
@@ -62,15 +63,29 @@ const AddEmployeePage = () => {
     : {};
 
   return (
-    <div>
-      <h2>{isEdit ? "Edit Employee" : "Add New Employee"}</h2>
-      {/* Render the EmployeeForm component and pass the appropriate handler */}
-      <EmployeeForm
-        initialValues={initialValues as Partial<EmployeeFormValues>} // Ensure the value is always Partial<EmployeeFormValues>
-        onSubmit={isEdit ? handleEdit : handleAdd}
-        isEdit={isEdit}
-      />
-    </div>
+    <>
+      <Header />
+      <div className="container mt-4">
+        <div className="row justify-content-center">
+          <div className="col-md-8 col-lg-6">
+            <div className="card">
+              <div className="card-header">
+                <h2 className="card-title">
+                  {isEdit ? "Edit Employee" : "Add New Employee"}
+                </h2>
+              </div>
+              <div className="card-body">
+                <EmployeeForm
+                  initialValues={initialValues as Partial<EmployeeFormValues>}
+                  onSubmit={isEdit ? handleEdit : handleAdd}
+                  isEdit={isEdit}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

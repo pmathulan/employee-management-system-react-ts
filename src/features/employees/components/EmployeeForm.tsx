@@ -54,73 +54,82 @@ const EmployeeForm = ({ initialValues, onSubmit, isEdit = false }: Props) => {
   return (
     <form
       onSubmit={handleSubmit(handleFormSubmit)}
-      className={styles.form}
+      className="container my-4"
       noValidate
       role="form"
     >
-      {/* Render reusable form field components */}
-      <FormField
-        label="First Name"
-        name="firstName"
-        type="text"
-        register={register}
-        error={errors.firstName?.message}
-        autoComplete="given-name"
-      />
-      <FormField
-        label="Last Name"
-        name="lastName"
-        type="text"
-        register={register}
-        error={errors.lastName?.message}
-        autoComplete="family-name"
-      />
-      <FormField
-        label="Email"
-        name="email"
-        type="email"
-        register={register}
-        error={errors.email?.message}
-        autoComplete="email"
-      />
-      <FormField
-        label="Phone"
-        name="phone"
-        type="tel"
-        register={register}
-        error={errors.phone?.message}
-        autoComplete="tel"
-      />
-      {/* Assumes FormRadioGroup handles registration and options mapping */}
-      <FormRadioGroup
-        label="Gender"
-        name="gender"
-        register={register}
-        error={errors.gender?.message}
-        options={[
-          { label: "Male", value: "Male" },
-          { label: "Female", value: "Female" },
-          { label: "Other", value: "Other" },
-        ]}
-      />
-      {/* Assumes FormDateField handles date input registration and validation */}
-      <FormDateField
-        label="Date of Birth"
-        name="dateOfBirth"
-        register={register}
-        error={errors.dateOfBirth?.message}
-      />
-
-      <FormDateField
-        label="Joined Date"
-        name="joinedDate"
-        register={register}
-        error={errors.joinedDate?.message}
-      />
-
+      <div className="mb-3">
+        <FormField
+          label="First Name"
+          name="firstName"
+          type="text"
+          register={register}
+          error={errors.firstName?.message}
+          autoComplete="given-name"
+        />
+      </div>
+      <div className="mb-3">
+        <FormField
+          label="Last Name"
+          name="lastName"
+          type="text"
+          register={register}
+          error={errors.lastName?.message}
+          autoComplete="family-name"
+        />
+      </div>
+      <div className="mb-3">
+        <FormField
+          label="Email"
+          name="email"
+          type="email"
+          register={register}
+          error={errors.email?.message}
+          autoComplete="email"
+        />
+      </div>
+      <div className="mb-3">
+        <FormField
+          label="Phone"
+          name="phone"
+          type="tel"
+          register={register}
+          error={errors.phone?.message}
+          autoComplete="tel"
+        />
+      </div>
+      <div className="mb-3">
+        <FormRadioGroup
+          label="Gender"
+          name="gender"
+          register={register}
+          error={errors.gender?.message}
+          options={[
+            { label: "Male", value: "Male" },
+            { label: "Female", value: "Female" },
+            { label: "Other", value: "Other" },
+          ]}
+        />
+      </div>
+      <div className="mb-3">
+        <FormDateField
+          label="Date of Birth"
+          name="dateOfBirth"
+          register={register}
+          error={errors.dateOfBirth?.message}
+        />
+      </div>
+      <div className="mb-3">
+        <FormDateField
+          label="Joined Date"
+          name="joinedDate"
+          register={register}
+          error={errors.joinedDate?.message}
+        />
+      </div>
       <button
         type="submit"
-        className={styles.button}
+        className="w-100 btn btn-primary btn-lg mt-3"
         disabled={isSubmitting} // Disable button while RHF indicates submission is in progress
       >
         {/* Show different text based on mode, indicate loading state */}

@@ -1,5 +1,4 @@
 import * as React from "react";
-import styles from "../styles/Form.module.css"; // Component styles
 
 // Defines a single radio button option
 interface RadioOption {
@@ -16,7 +15,7 @@ interface RadioGroupProps {
   error?: string; // Optional error message
 }
 
-// Renders a group of radio buttons with a common label and error display
+// Renders a group of radio buttons in a row with a common label and error display
 const FormRadioGroup: React.FC<RadioGroupProps> = ({
   label,
   name,
@@ -24,37 +23,28 @@ const FormRadioGroup: React.FC<RadioGroupProps> = ({
   register,
   error,
 }) => (
-  <div className={styles.formGroup}>
-    {/* Group label */}
-    <label className={styles.label} htmlFor={name}>
-      {" "}
-      {/* Link the label with the name of the radio group */}
+  <div className="form-group">
+    <label className="form-label" htmlFor={name}>
       {label}
     </label>
-    {/* Container for radio buttons */}
-    <div className={styles.radioGroup}>
-      {/* Map over options to create individual radio buttons */}
+    <div className="d-flex">
       {options.map(({ value, label: optionLabel }) => (
-        <label
-          key={value}
-          className={styles.radioLabel}
-          htmlFor={`${name}-${value}`}
-        >
-          {" "}
-          {/* Added the `htmlFor` to associate it with the radio input */}
+        <div className="form-check form-check-inline me-3" key={value}>
           <input
             type="radio"
-            id={`${name}-${value}`} // Unique ID for each radio button
-            name={name} // Same name to group the radio buttons
+            id={`${name}-${value}`}
+            name={name}
             value={value}
-            {...register(name)} // Register the group with the form library
+            className="form-check-input"
+            {...register(name)}
           />
-          {optionLabel}
-        </label>
+          <label className="form-check-label" htmlFor={`${name}-${value}`}>
+            {optionLabel}
+          </label>
+        </div>
       ))}
     </div>
-    {/* Display error if present */}
-    {error && <span className={styles.error}>{error}</span>}
+    {error && <div className="text-danger">{error}</div>}
   </div>
 );
 

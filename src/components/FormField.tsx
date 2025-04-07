@@ -1,6 +1,4 @@
 import * as React from "react";
-import styles from "../styles/Form.module.css";
-
 interface FormFieldProps {
   label: string;
   name: string;
@@ -18,18 +16,18 @@ const FormField: React.FC<FormFieldProps> = ({
   register,
   autoComplete,
 }) => (
-  <div className={styles.formGroup}>
-    <label htmlFor={name} className={styles.label}>
+  <div className="form-group">
+    <label htmlFor={name} className="form-label">
       {label}
     </label>
     <input
       id={name}
       type={type}
-      className={styles.input}
+      className="form-control"
       autoComplete={autoComplete}
       {...register(name)}
     />
-    {error && <span className={styles.error}>{error}</span>}
+    {error && <div className="text-danger">{error}</div>}
   </div>
 );
 

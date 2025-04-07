@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import styles from "../styles/Form.module.css"; // Import CSS Modules for component-specific styling
 
 interface FormDateFieldProps {
@@ -29,21 +29,21 @@ const FormDateField: React.FC<FormDateFieldProps> = ({
   register,
 }) => (
   // Main container for the form group (label, input, error)
-  <div className={styles.formGroup}>
+  <div className="form-group">
     {/* Label for the date input, linked via htmlFor to the input's id */}
-    <label htmlFor={name} className={styles.label}>
+    <label htmlFor={name} className="form-label">
       {label}
     </label>
     {/* The actual date input element */}
     <input
       type="date" // Specifies the input type for native browser date picker UI
       id={name} // ID links the label for accessibility
+      className="form-control"
       {...register(name)} // Spreads props from the form library's register function
       // This handles value, onChange, onBlur, ref, etc.
-      className={styles.dateInput} // Apply styles from the CSS module
     />
     {/* Conditionally render the error message if the 'error' prop is provided */}
-    {error && <span className={styles.error}>{error}</span>}
+    {error && <div className="text-danger">{error}</div>}
   </div>
 );
 export default FormDateField;
