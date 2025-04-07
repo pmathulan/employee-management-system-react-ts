@@ -24,12 +24,7 @@ const EmployeeRow = ({ employee, onEdit, onDelete }: Props) => {
         <button className={styles.editBtn} onClick={() => onEdit(employee.id)}>
           Edit
         </button>
-        <button
-          className={styles.deleteBtn}
-          onClick={() => onDelete(employee.id)}
-        >
-          Delete
-        </button>
+        <button onClick={() => onDelete(employee.id)}>Delete</button>
       </td>
     </tr>
   );

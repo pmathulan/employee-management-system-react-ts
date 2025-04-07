@@ -1,245 +1,145 @@
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { employeeSchema } from "../validation/employeeSchema"; // Yup schema for validation rules
-import { EmployeeFormValues } from "../types/Employee"; // TypeScript type defining the form data structure
-import "../styles/EmployeeForm.css"; // Component-specific styles
-
 /**
- * @interface Props
- * Defines the properties expected by the EmployeeForm component.
- *
- * @param {Partial<EmployeeFormValues>} initialValues - Optional initial data to pre-populate the form fields.
- * 'Partial' means all properties of EmployeeFormValues are optional.
- * Useful for editing existing employee data.
- * @param {(data: EmployeeFormValues) => void} onSubmit - Callback function executed when the form is submitted
- * successfully after passing validation. Receives the validated form data.
- * @param {boolean} [isEdit=false] - Optional flag to indicate if the form is being used for editing an existing employee.
- * Defaults to false (meaning it's for adding a new employee).
- * Used to change the submit button text.
- */
+ * EmployeeForm Component
+ * Purpose: Renders a form for creating or editing employee data.
+ * */
+
+import { useForm, UseFormReset } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import FormDateField from "../../../components/FormDateField";
+import FormField from "../../../components/FormField";
+import FormRadioGroup from "../../../components/FormRadioGroup";
+
+import { employeeSchema } from "../validation/employeeSchema";
+import { EmployeeFormValues } from "../types/Employee";
+import { useUnsavedChangesPrompt } from "../../../hooks/useUnsavedChangesPrompt";
+import styles from "../../../styles/Form.module.css";
+import { ToastContainer, toast } from "react-toastify";
+
+import {
+  EMPLOYEE_ADD_SUCCESS,
+  EMPLOYEE_UPDATE_SUCCESS,
+} from "../../../constants/messages";
+import { useHandleFormSubmit } from "../hooks/useHandleFormSubmit";
+
+// Props for the EmployeeForm component.
 interface Props {
+  /** Initial values to pre-populate the form, typically used for editing. */
   initialValues: Partial<EmployeeFormValues>;
-  onSubmit: (data: EmployeeFormValues) => void;
+  onSubmit: (
+    data: EmployeeFormValues,
+    // onSubmit receives validated form data AND the reset function from useForm
+    reset: UseFormReset<EmployeeFormValues> // Use imported type for reset function
+  ) => Promise<void> | void;
+  /** Flag indicating if the form is in 'edit' mode (defaults to false). Affects button text. */
   isEdit?: boolean;
 }
 
-/**
- * EmployeeForm Component
- *
- * A reusable form component for creating or editing employee data.
- * It utilizes `react-hook-form` for efficient state management and validation,
- * and `yup` (via `@hookform/resolvers/yup`) for defining and applying validation rules.
- *
- * @param {Props} props - The properties passed to the component.
- */
 const EmployeeForm = ({ initialValues, onSubmit, isEdit = false }: Props) => {
-  // Initialize react-hook-form.
+  // Initialize the form with validation schema
   const {
-    control, // Object to register controlled components (like inputs) with react-hook-form.
-    handleSubmit, // Wrapper function for the form's onSubmit handler. It triggers validation before calling our onSubmit prop.
-    formState: { errors }, // Object containing validation errors for each field.
+    register, // Function to register inputs with RHF
+    handleSubmit, // Wrapper for form submission, handles validation trigger
+    reset, // Function to programmatically reset form state
+    formState: { errors, isDirty, isSubmitting }, // Form state: errors for validation, isDirty for unsaved changes
   } = useForm<EmployeeFormValues>({
-    // Set default values for the form fields. Uses initialValues prop if provided.
-    defaultValues: initialValues,
-    // Integrate Yup validation schema with react-hook-form.
-    resolver: yupResolver(employeeSchema),
-    // Optionally set mode: 'onChange' | 'onBlur' | 'onSubmit' (default) | 'onTouched' | 'all'
-    // to change when validation triggers. Default 'onSubmit' is usually fine.
-    // mode: 'onChange',
+    defaultValues: initialValues, // with potentially provided initialValues (for editing).
+    resolver: yupResolver(employeeSchema), // Use yup for validation
+    mode: "onBlur", // Validate fields when they lose focus for earlier feedback
   });
 
-  // The main form structure.
-  // `handleSubmit(onSubmit)` ensures that our `onSubmit` function (passed via props)
-  // is only called if the form validation (defined in `employeeSchema`) passes.
-  // `noValidate` attribute disables default browser validation, allowing react-hook-form/yup to handle it.
+  // --- Unsaved Changes Prompt ---
+  // Activate the prompt if the form has been modified (isDirty)
+  useUnsavedChangesPrompt(isDirty);
+
+  // --- Form Submission Handler ---
+  /**Internal handler that calls the onSubmit prop passed from the parent.
+   * This function is called by RHF *only after* validation passes.
+   * to the `onSubmit` prop provided by the parent component.
+   * @param {EmployeeFormValues} data - The validated form data.
+   */
+  const handleFormSubmit = useHandleFormSubmit(onSubmit, reset, isEdit);
+
+  // --- Render Logic ---
   return (
-    <form className="form" onSubmit={handleSubmit(onSubmit)} noValidate>
-      {/* --- First Name Field --- */}
-      <div className="form-group">
-        {/* Standard label associated with the input field via htmlFor */}
-        <label htmlFor="firstName">First Name</label>
-        {/* Controller component integrates the input with react-hook-form */}
-        <Controller
-          name="firstName" // Must match a key in EmployeeFormValues and employeeSchema
-          control={control} // Pass the control object from useForm
-          // render prop defines the actual input element and connects it
-          render={({ field }) => (
-            <input
-              id="firstName" // Corresponds to label's htmlFor
-              type="text"
-              {...field} // Spreads necessary props (onChange, onBlur, value, ref) from react-hook-form into the input
-              className={`input ${errors.firstName ? "error" : ""}`} // Dynamically adds 'error' class if validation fails for this field
-              autoComplete="given-name" // Helps browsers auto-fill
-              placeholder="Enter first name" // User-friendly placeholder text
-            />
-          )}
-        />
-        {/* Conditionally render error message if validation fails for this field */}
-        {errors.firstName && (
-          <span className="error-message">{errors.firstName.message}</span>
-        )}
-      </div>
+    <form
+      onSubmit={handleSubmit(handleFormSubmit)}
+      className={styles.form}
+      noValidate
+    >
+      {/* Render reusable form field components */}
+      {/* Assumes these components handle register, error display, label, etc. */}
+      <FormField
+        label="First Name"
+        name="firstName"
+        type="text"
+        register={register}
+        error={errors.firstName?.message}
+        autoComplete="given-name"
+      />
+      <FormField
+        label="Last Name"
+        name="lastName"
+        type="text"
+        register={register}
+        error={errors.lastName?.message}
+        autoComplete="family-name"
+      />
+      <FormField
+        label="Email"
+        name="email"
+        type="email"
+        register={register}
+        error={errors.email?.message}
+        autoComplete="email"
+      />
+      <FormField
+        label="Phone"
+        name="phone"
+        type="tel"
+        register={register}
+        error={errors.phone?.message}
+        autoComplete="tel"
+      />
+      {/* Assumes FormRadioGroup handles registration and options mapping */}
+      <FormRadioGroup
+        label="Gender"
+        name="gender"
+        register={register}
+        error={errors.gender?.message}
+        options={[
+          { label: "Male", value: "Male" },
+          { label: "Female", value: "Female" },
+          { label: "Other", value: "Other" },
+        ]}
+      />
+      {/* Assumes FormDateField handles date input registration and validation */}
+      <FormDateField
+        label="Date of Birth"
+        name="dateOfBirth"
+        register={register}
+        error={errors.dateOfBirth?.message}
+      />
 
-      {/* --- Last Name Field --- */}
-      {/* Structure follows the same pattern as First Name */}
-      <div className="form-group">
-        <label htmlFor="lastName">Last Name</label>
-        <Controller
-          name="lastName"
-          control={control}
-          render={({ field }) => (
-            <input
-              id="lastName"
-              type="text"
-              {...field}
-              className={`input ${errors.lastName ? "error" : ""}`}
-              autoComplete="family-name"
-              placeholder="Enter last name"
-            />
-          )}
-        />
-        {errors.lastName && (
-          <span className="error-message">{errors.lastName.message}</span>
-        )}
-      </div>
+      <FormDateField
+        label="Joined Date"
+        name="joinedDate"
+        register={register}
+        error={errors.joinedDate?.message}
+      />
 
-      {/* --- Email Field --- */}
-      <div className="form-group">
-        <label htmlFor="email">Email</label>
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <input
-              id="email"
-              type="email" // Input type 'email' provides basic browser validation and keyboard hints on mobile
-              {...field}
-              className={`input ${errors.email ? "error" : ""}`}
-              autoComplete="email"
-              placeholder="Enter email address"
-            />
-          )}
-        />
-        {errors.email && (
-          <span className="error-message">{errors.email.message}</span>
-        )}
-      </div>
-
-      {/* --- Phone Field --- */}
-      <div className="form-group">
-        <label htmlFor="phone">Phone</label>
-        <Controller
-          name="phone"
-          control={control}
-          render={({ field }) => (
-            <input
-              id="phone"
-              type="tel" // Input type 'tel' provides keyboard hints on mobile
-              {...field}
-              className={`input ${errors.phone ? "error" : ""}`}
-              autoComplete="tel"
-              placeholder="Enter phone number"
-            />
-          )}
-        />
-        {errors.phone && (
-          <span className="error-message">{errors.phone.message}</span>
-        )}
-      </div>
-
-      {/* --- Gender Field (Radio Buttons) --- */}
-      <div className="form-group">
-        <label>Gender</label>{" "}
-        {/* No htmlFor needed as it applies to the group */}
-        <Controller
-          name="gender"
-          control={control}
-          render={({ field }) => (
-            // Grouping radio buttons for layout and clarity
-            <div className="radio-group">
-              <label>
-                <input
-                  type="radio"
-                  value="Male" // The value sent on form submission if this is selected
-                  // Check this radio if the field's current value matches
-                  checked={field.value === "Male"}
-                  // Use field.onChange provided by Controller to update react-hook-form state
-                  onChange={field.onChange}
-                  // Note: For radio groups, `field` object (value, onChange) applies to the group.
-                  // We manually set the 'value' and check 'checked' status for each radio.
-                />{" "}
-                Male
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  value="Female"
-                  checked={field.value === "Female"}
-                  onChange={field.onChange}
-                />{" "}
-                Female
-              </label>
-              {/* Add other gender options if needed following the same pattern */}
-            </div>
-          )}
-        />
-        {/* Display validation error for the gender field */}
-        {errors.gender && (
-          <span className="error-message">{errors.gender.message}</span>
-        )}
-      </div>
-
-      {/* --- Date of Birth Field --- */}
-      <div className="form-group">
-        <label htmlFor="dob">Date of Birth</label>
-        <Controller
-          name="dateOfBirth"
-          control={control}
-          render={({ field }) => (
-            <input
-              id="dob"
-              type="date" // Input type 'date' provides a native date picker UI
-              {...field}
-              // Important: Ensure the value format matches what the 'date' input expects (YYYY-MM-DD)
-              // If your initialValues or state uses a different format (e.g., Date object, timestamp),
-              // you might need to format it here before passing to the input and parse it on change/submit.
-              // React Hook Form often handles basic Date object <-> string conversion.
-              className={`input ${errors.dateOfBirth ? "error" : ""}`}
-            />
-          )}
-        />
-        {errors.dateOfBirth && (
-          <span className="error-message">{errors.dateOfBirth.message}</span>
-        )}
-      </div>
-
-      {/* --- Joined Date Field --- */}
-      <div className="form-group">
-        <label htmlFor="joinedDate">Joined Date</label>
-        <Controller
-          name="joinedDate"
-          control={control}
-          render={({ field }) => (
-            <input
-              id="joinedDate"
-              type="date"
-              {...field}
-              className={`input ${errors.joinedDate ? "error" : ""}`}
-            />
-          )}
-        />
-        {errors.joinedDate && (
-          <span className="error-message">{errors.joinedDate.message}</span>
-        )}
-      </div>
-
-      {/* --- Submit Button --- */}
-      <div className="form-group">
-        <button type="submit" className="button primary">
-          {/* Dynamically change button text based on whether we are editing or adding */}
-          {isEdit ? "Update Employee" : "Add Employee"}
-        </button>
-      </div>
+      <button
+        type="submit"
+        className={styles.button}
+        disabled={isSubmitting} // Disable button while RHF indicates submission is in progress
+      >
+        {/* Show different text based on mode, indicate loading state */}
+        {isSubmitting
+          ? "Submitting..."
+          : isEdit
+          ? "Update Employee"
+          : "Add Employee"}
+      </button>
     </form>
   );
 };

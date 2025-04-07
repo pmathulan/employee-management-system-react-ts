@@ -1,12 +1,19 @@
-import React from "react";
-import "../styles/DeleteEmployeeDialog.module.css"; // Import the custom CSS
+import * as React from "react";
+import { useEffect } from "react";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+} from "@mui/material";
 
-// Props type for DeleteEmployeeDialog component
+// Props for confirmation modal
 interface DeleteEmployeeDialogProps {
-  open: boolean; // Whether the dialog should be displayed
-  onClose: () => void; // Function to call when user closes dialog
-  onConfirm: () => void; // Function to call when user confirms deletion
-  employeeName: string; // Employee name to display in message
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  employeeName: string;
 }
 
 const DeleteEmployeeDialog: React.FC<DeleteEmployeeDialogProps> = ({
@@ -15,29 +22,33 @@ const DeleteEmployeeDialog: React.FC<DeleteEmployeeDialogProps> = ({
   onConfirm,
   employeeName,
 }) => {
-  // If not open, don't render anything
-  if (!open) return null;
+  // Close on ESC key
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (open) window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [open, onClose]);
 
   return (
-    <div className="dialog-backdrop">
-      <div className="dialog">
-        <h2 className="dialog-title">Delete Employee</h2>
-        <div className="dialog-content">
-          <p>
-            Are you sure you want to delete the employee{" "}
-            <strong>{employeeName}</strong>?
-          </p>
-        </div>
-        <div className="dialog-actions">
-          <button className="btn cancel-btn" onClick={onClose}>
-            Cancel
-          </button>
-          <button className="btn delete-btn" onClick={onConfirm}>
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>Delete Employee</DialogTitle>
+      <DialogContent>
+        <p>
+          Are you sure you want to delete the employee{" "}
+          <strong>{employeeName}</strong>?
+        </p>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="secondary">
+          Cancel
+        </Button>
+        <Button onClick={onConfirm} color="primary">
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

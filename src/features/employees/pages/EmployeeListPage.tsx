@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import EmployeeTable from "../components/EmployeeTable";
 import { useNavigate } from "react-router";
 import { RootState } from "../../../store/store";
-import useDeleteEmployeeDialog from "../../../hooks/useDeleteEmployeeDialog";
 import DeleteEmployeeDialog from "../components/DeleteEmployeeDialog";
+import useDeleteEmployeeDialog from "../hooks/useDeleteEmployeeDialog";
 
 const EmployeeListPage = () => {
   const employees = useSelector((state: RootState) => state.employee.list);

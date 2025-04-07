@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { useDispatch } from "react-redux";
 import { deleteEmployee } from "../../features/employees/employeeSlice";
-import useDeleteEmployeeDialog from "../../hooks/useDeleteEmployeeDialog";
+import useDeleteEmployeeDialog from "../../features/employees/hooks/useDeleteEmployeeDialog";
 
 jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),

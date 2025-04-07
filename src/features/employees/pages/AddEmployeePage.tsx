@@ -3,10 +3,10 @@
 import { useDispatch } from "react-redux"; // Hook to dispatch actions to Redux store
 import { useNavigate, useParams } from "react-router"; // Hook to navigate between routes and get route params
 import EmployeeForm from "../components/EmployeeForm"; // Import EmployeeForm component
-import { setEmployees } from "../employeeSlice"; // Import Redux action to update employee list
 import { getEmployees } from "../employeeApi"; // API utility to get current employee data
 import { EmployeeFormValues } from "../types/EmployeeFormValues"; // Type for form values
 import { v4 as uuidv4 } from "uuid"; // Importing uuid for unique ID generation
+import { setEmployees } from "../employeeSlice";
 
 // Component to handle adding or editing an employee
 const AddEmployeePage = () => {
