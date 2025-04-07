@@ -7,6 +7,7 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
+import { EMPLOYEE_DELETE_PROMPT } from "../../../constants/messages";
 
 // Props for confirmation modal
 interface DeleteEmployeeDialogProps {
@@ -36,7 +37,7 @@ const DeleteEmployeeDialog: React.FC<DeleteEmployeeDialogProps> = ({
       <DialogTitle>Delete Employee</DialogTitle>
       <DialogContent>
         <p>
-          Are you sure you want to delete the employee{" "}
+          {EMPLOYEE_DELETE_PROMPT}
           <strong>{employeeName}</strong>?
         </p>
       </DialogContent>

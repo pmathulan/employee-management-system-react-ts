@@ -1,5 +1,3 @@
-// src/pages/AddEmployeePage.tsx
-
 import { useDispatch } from "react-redux"; // Hook to dispatch actions to Redux store
 import { useNavigate, useParams } from "react-router"; // Hook to navigate between routes and get route params
 import EmployeeForm from "../components/EmployeeForm"; // Import EmployeeForm component

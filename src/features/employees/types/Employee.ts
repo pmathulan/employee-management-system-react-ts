@@ -10,5 +10,5 @@ export interface Employee {
     joinedDate: string; // Date when the employee joined (ISO format).
 }
 
-export type EmployeeFormValues = Omit<Employee, 'id'>;
+// export type EmployeeFormValues = Omit<Employee, 'id'>;
 

@@ -1,5 +1,3 @@
-// src/pages/EmployeeListPage.tsx
-
 import { useSelector } from "react-redux";
 import EmployeeTable from "../components/EmployeeTable";
 import { useNavigate } from "react-router";

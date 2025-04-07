@@ -9,60 +9,35 @@ import { UNSAVED_CHANGES_PROMPT } from '../constants/messages'; // Import the co
  * @param {boolean} [enabled=true] - Optional flag to enable/disable the prompt behavior dynamically.
  */
 export const useUnsavedChangesPrompt = (
-    isDirty: boolean,
-    message: string = UNSAVED_CHANGES_PROMPT,
-    enabled: boolean = true
+  isDirty: boolean,
+  message: string = UNSAVED_CHANGES_PROMPT,
+  enabled: boolean = true
 ): void => {
 
-    // --- Integration with React Router v6.4+ (Recommended for SPA navigation) ---
-    // (Uncomment and install react-router-dom if using it)
-    /*
-    const blocker = useBlocker(isDirty && enabled);
-  
-    useEffect(() => {
-      if (!blocker || blocker.state === 'unblocked') {
-        return;
+  // --- Fallback using `beforeunload` for browser-level navigation (closing tab/window, refresh) ---
+  // Note: This works independently of React Router but offers less control over in-app navigation.
+  // Custom messages in `beforeunload` are often ignored by modern browsers for security reasons,
+  // showing a generic browser message instead.
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (isDirty && enabled) {
+        // Standard way to trigger the browser's confirmation dialog.
+        event.preventDefault();
+        // Included for older browsers; modern browsers usually ignore this custom message.
+        event.returnValue = message;
+        return message; // For some older browsers
       }
-  
-      if (blocker.state === 'blocked') {
-        const proceed = window.confirm(message);
-        if (proceed) {
-          // Allow navigation
-          blocker.proceed();
-        } else {
-          // Stay on the page
-          blocker.reset();
-        }
-      }
-    }, [blocker, message]);
-    */
-    // --- End React Router Integration ---
+      // If not dirty or not enabled, do nothing - allow navigation freely.
+    };
 
+    // Add the event listener when the component mounts or dependencies change
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
-    // --- Fallback using `beforeunload` for browser-level navigation (closing tab/window, refresh) ---
-    // Note: This works independently of React Router but offers less control over in-app navigation.
-    // Custom messages in `beforeunload` are often ignored by modern browsers for security reasons,
-    // showing a generic browser message instead.
-    useEffect(() => {
-        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-            if (isDirty && enabled) {
-                // Standard way to trigger the browser's confirmation dialog.
-                event.preventDefault();
-                // Included for older browsers; modern browsers usually ignore this custom message.
-                event.returnValue = message;
-                return message; // For some older browsers
-            }
-            // If not dirty or not enabled, do nothing - allow navigation freely.
-        };
-
-        // Add the event listener when the component mounts or dependencies change
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        // Cleanup function: remove the event listener when the component unmounts or dependencies change
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, [isDirty, message, enabled]); // Re-run the effect if these dependencies change
+    // Cleanup function: remove the event listener when the component unmounts or dependencies change
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [isDirty, message, enabled]); // Re-run the effect if these dependencies change
 };
 
-// export default useUnsavedChangesPrompt; // Use named export if preferred
+// export default useUnsavedChangesPrompt; 

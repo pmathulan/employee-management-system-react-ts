@@ -6,16 +6,11 @@ import FormField from "../../../components/FormField";
 import FormRadioGroup from "../../../components/FormRadioGroup";
 
 import { employeeSchema } from "../validation/employeeSchema";
-import { EmployeeFormValues } from "../types/Employee";
 import { useUnsavedChangesPrompt } from "../../../hooks/useUnsavedChangesPrompt";
 import styles from "../../../styles/Form.module.css";
-import { ToastContainer, toast } from "react-toastify";
 
-import {
-  EMPLOYEE_ADD_SUCCESS,
-  EMPLOYEE_UPDATE_SUCCESS,
-} from "../../../constants/messages";
 import { useHandleFormSubmit } from "../hooks/useHandleFormSubmit";
+import { EmployeeFormValues } from "../types/EmployeeFormValues";
 
 // Props for the EmployeeForm component.
 interface Props {

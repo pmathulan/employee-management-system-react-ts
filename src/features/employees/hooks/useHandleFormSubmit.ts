@@ -1,10 +1,10 @@
-import { EmployeeFormValues } from "../types/Employee";
 import { toast } from "react-toastify";
 import {
   EMPLOYEE_ADD_SUCCESS,
   EMPLOYEE_UPDATE_SUCCESS,
   ERROR_MESSAGE,
 } from "../../../constants/messages";
+import { EmployeeFormValues } from "../types/EmployeeFormValues";
 
 // Custom hook to handle form submission with toast notification and error handling.
 export const useHandleFormSubmit = (

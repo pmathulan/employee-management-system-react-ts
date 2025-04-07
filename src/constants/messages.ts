@@ -3,6 +3,7 @@
  */
 export const UNSAVED_CHANGES_PROMPT =
     'Form has been modified. You will lose your unsaved changes. Are you sure you want to leave this page?';
+export const EMPLOYEE_DELETE_PROMPT = 'Are you sure you want to delete the employee ';
 
 export const EMPLOYEE_ADD_SUCCESS = 'Employee added successfully!';
 export const EMPLOYEE_UPDATE_SUCCESS = 'Employee updated successfully!';
