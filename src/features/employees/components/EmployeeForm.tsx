@@ -1,8 +1,3 @@
-/**
- * EmployeeForm Component
- * Purpose: Renders a form for creating or editing employee data.
- * */
-
 import { useForm, UseFormReset } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -66,9 +61,9 @@ const EmployeeForm = ({ initialValues, onSubmit, isEdit = false }: Props) => {
       onSubmit={handleSubmit(handleFormSubmit)}
       className={styles.form}
       noValidate
+      role="form"
     >
       {/* Render reusable form field components */}
-      {/* Assumes these components handle register, error display, label, etc. */}
       <FormField
         label="First Name"
         name="firstName"
